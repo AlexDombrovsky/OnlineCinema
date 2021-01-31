@@ -1,0 +1,58 @@
+﻿@model PageMovieViewModel
+@{
+    ViewData["Title"] = "Онлайн-кинотеатр";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Добро пожаловать</h1>
+    <p class="lead">В наш онлайн-кинотеатр</p>
+</div>
+
+<div class="row text-center">
+    @foreach (var item in Model.Items)
+    {
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100">
+                <img src="/images/@item.Image"/>
+                <div class="card-body">
+                    <h4 class="card-title">@item.Name</h4>
+                    <p class="card-text">@item.Description</p>
+                </div>
+                <div class="card-footer">
+                    <a href="@Url.Action("Detail", new {id = item.Id})" class="btn btn-primary">Подробнее</a>
+                    @if (item.User == User.Identity.Name)
+                    {
+                        <a href="@Url.Action("AddOrEdit", new {id = item.Id})" class="btn btn-outline-primary">
+                            <i class="glyphicon glyphicon-edit"></i>
+                        </a>
+                        <a href="@Url.Action("Delete", new {id = item.Id})" id="js-delete" class="btn btn-outline-danger" onclick="return confirm('Вы уверены, что хотите удалить фильм?')">
+                            <i class="glyphicon glyphicon-remove"></i>
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="pagination">
+    @if (Model.Pager.EndPage > 1)
+    {
+        if (Model.Pager.CurrentPage > 1)
+        {
+            <a class="page-link" href="@Url.Action("Index")">Первая</a>
+            <a class="page-link" href="@Url.Action("Index", new {page = Model.Pager.CurrentPage - 1})">Пред.</a>
+        }
+
+        for (var page = Model.Pager.StartPage; page <= Model.Pager.EndPage; page++)
+        {
+            <a class="page-link @(page == Model.Pager.CurrentPage ? "active" : "")" href="@Url.Action("Index", new {page})"> @(page) </a>
+        }
+
+        if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+        {
+            <a class="page-link" href="@Url.Action("Index", new {page = Model.Pager.CurrentPage + 1})">След.</a>
+            <a class="page-link" href="@Url.Action("Index", new {page = Model.Pager.TotalPages})">Последняя</a>
+        }
+    }
+</div>

@@ -1,0 +1,32 @@
+﻿@model MovieViewModel
+
+@{ ViewData["Title"] = Model.Name; }
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card mt-4">
+                <img src="/images/@Model.Image" alt="">
+                <div class="card-body">
+                    <h3 class="card-title">@Model.Name</h3>
+                    <h4>@Model.ReleaseYear</h4>
+                </div>
+            </div>
+            <div class="card card-outline-secondary my-4">
+                <div class="card-header">
+                    Описание
+                </div>
+                <div class="card-body">
+                    <p>@Model.Description</p>
+                    <small class="text-muted">Posted by @(Model.User ?? "anonymous")</small>
+                    <hr>
+                    <a href="@Url.Action("Index")" class="btn btn-success">Вернуться</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
